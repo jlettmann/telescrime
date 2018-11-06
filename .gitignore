@@ -1,1 +1,5 @@
-/target/
+target/
+.settings/org.hibernate.eclipse.console.prefs
+.settings/org.eclipse.jpt.core.prefs
+src/main/webapp/WEB-INF/.faces-config.xml.jsfdia
+src/main/java/de/tlscrm/model/*
