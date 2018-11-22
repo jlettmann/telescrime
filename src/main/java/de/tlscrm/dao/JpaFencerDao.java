@@ -2,6 +2,7 @@ package de.tlscrm.dao;
 
 import java.util.List;
 import java.util.Optional;
+import javax.inject.Named;
 import javax.persistence.TypedQuery;
 import de.tlscrm.model.Fencer;
 
@@ -11,7 +12,8 @@ import de.tlscrm.model.Fencer;
  * @author Lukas
  *
  */
-public class JpaFencerDao extends JpaDao<Fencer> {
+@Named
+public class JpaFencerDao extends JpaDao<Fencer> implements FencerDao {
 
 	@Override
 	public Optional<Fencer> get(final long id) {
