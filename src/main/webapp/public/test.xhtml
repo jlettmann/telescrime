@@ -10,6 +10,16 @@
 	<h:body>
 		<ui:composition>
 			<h1>Content</h1>
+			<h:form id="newForm">
+				<p:commandButton value="Create new fencer" action="#{fencerDisplay.newFencer}" update=":inputForm" />
+			</h:form>
+			<h:form id="inputForm">
+				<h:panelGroup layout="block" rendered="#{fencerDisplay.fencer != null}">
+					<p:growl id="growl" life="2000" />
+					<p:inputText required="true" requiredMessage="Provide a name!" value="#{fencerDisplay.name}" />
+					<p:commandButton value="Save" update="@form" process="@form" action="#{fencerDisplay.saveFencer()}" />
+				</h:panelGroup>
+			</h:form>
 		</ui:composition>
 	</h:body>
 </html>
