@@ -39,11 +39,13 @@ public abstract class JpaDao<T> implements Dao<T> {
 			try {
 				transaction.rollback();
 			} catch (IllegalStateException | SecurityException | SystemException e1) {
+				// TODO: Logging
 				e1.printStackTrace();
 			}
 			throw re;
 		} catch (RollbackException | HeuristicMixedException | HeuristicRollbackException
 		        | SystemException | NotSupportedException e) {
+			// TODO: Logging
 			e.printStackTrace();
 		}
 	}
