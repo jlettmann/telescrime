@@ -49,4 +49,19 @@ public abstract class JpaDao<T> implements Dao<T> {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void save(final T t) {
+		executeInsideTransaction(em -> em.persist(t));
+	}
+
+	@Override
+	public void update(final T t, final String[] params) {
+		executeInsideTransaction(em -> em.merge(t));
+	}
+
+	@Override
+	public void delete(final T t) {
+		executeInsideTransaction(em -> em.remove(t));
+	}
 }

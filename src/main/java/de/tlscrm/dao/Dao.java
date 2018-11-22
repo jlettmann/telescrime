@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * The base interface for all Data Access Objects.
  *
- * @author Lukas
+ * @author ltegethoff
  *
  */
 public interface Dao<T> {
