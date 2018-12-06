@@ -13,6 +13,7 @@
 				value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.connection.driver_class"
 				value="org.postgresql.Driver" />
+			<property name="hibernate.default_schema" value="fencing"/>
 		</properties>
 	</persistence-unit>
 </persistence>
