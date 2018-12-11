@@ -1,5 +1,7 @@
 package de.tlscrm.backingbeans;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -13,7 +15,7 @@ import de.tlscrm.model.Principal;
 
 @Named
 @RequestScoped
-public class LoginHandler {
+public class LoginHandler implements Serializable {
 
    private static final String NAV_HOME_REDIRECT = "index.xhtml?faces-redirect=true";
 

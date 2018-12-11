@@ -19,7 +19,7 @@
 			<p:outputLabel for="email" value="#{msg.email}"/>
 			<p:inputText id="email" value="#{loginHandler.email}" required="true" requiredMessage="#{msg.emailRequired}"/>
 			<p:outputLabel for="password" value="#{msg.password}"/>
-			<p:password id="password" value="#{loginHandler.password}" feedback="true" required="true" requiredMessage="#{msg.passwordRequired}"/>
+			<p:password id="password" value="#{loginHandler.password}" required="true" requiredMessage="#{msg.passwordRequired}"/>
 			<p:commandButton action="#{loginHandler.login()}" value="#{msg.login}" update="@form"/>
 		</h:form>
 	</h:body>

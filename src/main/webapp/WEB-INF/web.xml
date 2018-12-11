@@ -37,6 +37,12 @@
 	</welcome-file-list>
 	<security-constraint>
 		<web-resource-collection>
+			<web-resource-name>Admin Area</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+		</web-resource-collection>
+	</security-constraint>
+	<security-constraint>
+		<web-resource-collection>
 			<web-resource-name>Application</web-resource-name>
 			<url-pattern>/*</url-pattern>
 		</web-resource-collection>
