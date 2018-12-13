@@ -23,7 +23,7 @@ public class JpaFencerDao extends JpaDao<Fencer> implements FencerDao {
 	@Override
 	public List<Fencer> getAll() {
 		TypedQuery<Fencer> getAllFencers =
-		        entityManager.createQuery("SELECT f FROM fencer f", Fencer.class);
+		      entityManager.createQuery("SELECT f FROM Fencer f", Fencer.class);
 		return getAllFencers.getResultList();
 	}
 

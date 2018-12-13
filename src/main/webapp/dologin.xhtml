@@ -14,17 +14,16 @@
 </h:head>
 <h:body>
 	<h1>Login</h1>
-	<h:form id="loginForm"
-		onsubmit="document.getElementById('loginForm').action='j_security_check';"
-		prependId="false">
+	<h:form>
 		<p:growl id="loginGrowl" sticky="true" showDetail="true" />
-		<p:outputLabel for="j_username" value="#{msg.email}" />
-		<p:inputText id="j_username" required="true"
+		<p:outputLabel for="email" value="#{msg.email}" />
+		<p:inputText id="email" value="#{loginHandler.email}" required="true"
 			requiredMessage="#{msg.emailRequired}" />
-		<p:outputLabel for="j_password" value="#{msg.password}" />
-		<p:password id="j_password" required="true"
-			requiredMessage="#{msg.passwordRequired}" />
-		<p:commandButton id="submit" value="#{msg.login}" ajax="false" />
+		<p:outputLabel for="password" value="#{msg.password}" />
+		<p:password id="password" value="#{loginHandler.password}"
+			required="true" requiredMessage="#{msg.passwordRequired}" />
+		<p:commandButton action="#{loginHandler.login()}" value="#{msg.login}"
+			ajax="false" update="@all" />
 	</h:form>
 </h:body>
 </html>

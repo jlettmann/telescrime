@@ -22,8 +22,7 @@ public class JpaRoleDao extends JpaDao<Role> implements RoleDao {
 
 	@Override
 	public List<Role> getAll() {
-		TypedQuery<Role> getAllWeapons =
-		        entityManager.createQuery("SELECT r FROM Role r", Role.class);
-		return getAllWeapons.getResultList();
+		TypedQuery<Role> getAllRoles = entityManager.createQuery("SELECT r FROM Role r", Role.class);
+		return getAllRoles.getResultList();
 	}
 }

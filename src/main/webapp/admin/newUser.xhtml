@@ -6,11 +6,47 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:head></h:head>
-	<h:body>
-		<ui:composition template="WEB-INF/templates/layout.xhtml">
+<h:head></h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+		<ui:define name="title">
 			<h1>Add user</h1>
-			
-		</ui:composition>
-	</h:body>
+		</ui:define>
+		<ui:define name="content">
+			<h:form prependId="false">
+				<p:growl id="newUserGrowl" />
+				<h:panelGroup id="newUserContent" layout="block">
+					<p:outputLabel for="email" value="#{msg.email}" />
+					<p:inputText id="email" value="#{userManagement.newPricipal.email}"
+						required="true" validator="#{userManagement.validateEMail}" />
+					<p:outputLabel for="password" value="#{msg.password}" />
+					<p:password id="password"
+						value="#{userManagement.newPricipal.password}"
+						match="passwordConfirmation" feedback="true" required="true" />
+					<p:outputLabel for="password" value="#{msg.passwordConfirmation}" />
+					<p:password id="passwordConfirmation"
+						value="#{userManagement.newPricipal.password}" required="true" />
+					<p:outputLabel for="firstname" value="#{msg.firstName}" />
+					<p:inputText id="firstname"
+						value="#{userManagement.newPricipal.firstname}" required="true" />
+					<p:outputLabel for="lastname" value="#{msg.lastName}" />
+					<p:inputText id="lastname"
+						value="#{userManagement.newPricipal.lastname}" required="true" />
+					<p:outputLabel for="role" value="#{msg.role}" />
+					<p:selectManyMenu id="role" value="#{userManagement.roles}"
+						var="role" converter="#{roleConverter}" showCheckbox="true"
+						required="true">
+						<f:selectItems value="#{userManagement.roleSelectItems}" />
+						<p:column>
+							<h:outputText value="#{role.role}" />
+						</p:column>
+					</p:selectManyMenu>
+
+					<p:commandButton id="saveUserButton" value="#{msg.save}"
+						ajax="false" action="#{userManagement.saveUser}" />
+				</h:panelGroup>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
 </html>

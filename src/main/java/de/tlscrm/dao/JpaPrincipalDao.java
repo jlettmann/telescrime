@@ -1,9 +1,13 @@
 package de.tlscrm.dao;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Named;
 import javax.persistence.TypedQuery;
+import javax.xml.bind.DatatypeConverter;
 import de.tlscrm.model.Principal;
 
 
@@ -37,8 +41,23 @@ public class JpaPrincipalDao extends JpaDao<Principal> implements PrincipalDao {
    }
 
    @Override
+   public boolean isEMailFree(final String email) {
+      TypedQuery<Long> getCountByEMail = entityManager
+            .createNamedQuery(Principal.COUNT_EMAIL, Long.class).setParameter("email", email);
+      return getCountByEMail.getSingleResult() < 1L;
+   }
+
+   @Override
    public void save(final Principal t) {
-      // TODO: encrypt Password here
-      super.save(t);
+      try {
+         byte[] hashedPw = MessageDigest.getInstance("SHA-256")
+               .digest(t.getPassword().getBytes(Charset.forName("UTF-8")));
+         t.setPassword(DatatypeConverter.printBase64Binary(hashedPw));
+         super.save(t);
+      } catch (NoSuchAlgorithmException e) {
+         // TODO Logging
+         // shouldn't happen
+         e.printStackTrace();
+      }
    }
 }

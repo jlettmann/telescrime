@@ -22,12 +22,15 @@ import javax.persistence.UniqueConstraint;
  */
 @NamedQuery(name = Principal.FIND_BY_EMAIL,
       query = "select p from Principal p where p.email = :email")
+@NamedQuery(name = Principal.COUNT_EMAIL,
+      query = "select count(p.email) from Principal p where p.email = :email")
 @Entity
 @Table(name = "principal", schema = "fencing",
       uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Principal implements java.io.Serializable {
 
    public static final String FIND_BY_EMAIL = "principal.findbyemail";
+   public static final String COUNT_EMAIL = "principal.countemail";
 
    private long id;
    private String email;
