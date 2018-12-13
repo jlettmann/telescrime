@@ -5,7 +5,7 @@
 -- Dumped from database version 10.6
 -- Dumped by pg_dump version 10.6
 
--- Started on 2018-12-06 23:01:00
+-- Started on 2018-12-13 16:46:57
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET row_security = off;
 
 DROP DATABASE telescrime;
 --
--- TOC entry 2948 (class 1262 OID 16395)
+-- TOC entry 2950 (class 1262 OID 16395)
 -- Name: telescrime; Type: DATABASE; Schema: -; Owner: -
 --
 
@@ -55,7 +55,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2952 (class 0 OID 0)
+-- TOC entry 2954 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
@@ -72,12 +72,40 @@ CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA fencing;
 
 
 --
--- TOC entry 2953 (class 0 OID 0)
+-- TOC entry 2955 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+
+
+--
+-- TOC entry 262 (class 1255 OID 16581)
+-- Name: gethitsforfencer(integer); Type: FUNCTION; Schema: fencing; Owner: -
+--
+
+CREATE FUNCTION fencing.gethitsforfencer(fencer integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+begin
+	return(select sum(bf.hits) from fencing.bout_fencer bf where bf.fencer_id = fencer);
+end;
+$$;
+
+
+--
+-- TOC entry 261 (class 1255 OID 16580)
+-- Name: gethitsforfencer(integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.gethitsforfencer(fencer integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+begin
+	select sum(bf.hits) from fencing.bout_fencer bf where bf.fencer_id = fencer;
+end;
+$$;
 
 
 SET default_tablespace = '';
@@ -242,23 +270,29 @@ ALTER TABLE fencing.weapon ALTER COLUMN weapon_id ADD GENERATED ALWAYS AS IDENTI
 
 
 --
--- TOC entry 2931 (class 0 OID 16397)
+-- TOC entry 2933 (class 0 OID 16397)
 -- Dependencies: 198
 -- Data for Name: bout; Type: TABLE DATA; Schema: fencing; Owner: -
 --
 
+INSERT INTO fencing.bout (bout_id, bout_date, weapon_id) OVERRIDING SYSTEM VALUE VALUES (1, '2018-08-08', 1);
+INSERT INTO fencing.bout (bout_id, bout_date, weapon_id) OVERRIDING SYSTEM VALUE VALUES (2, '2018-05-25', 1);
 
 
 --
--- TOC entry 2933 (class 0 OID 16402)
+-- TOC entry 2935 (class 0 OID 16402)
 -- Dependencies: 200
 -- Data for Name: bout_fencer; Type: TABLE DATA; Schema: fencing; Owner: -
 --
 
+INSERT INTO fencing.bout_fencer (bout_id, fencer_id, hits) VALUES (1, 1, 5);
+INSERT INTO fencing.bout_fencer (bout_id, fencer_id, hits) VALUES (1, 2, 4);
+INSERT INTO fencing.bout_fencer (bout_id, fencer_id, hits) VALUES (2, 2, 5);
+INSERT INTO fencing.bout_fencer (bout_id, fencer_id, hits) VALUES (2, 3, 2);
 
 
 --
--- TOC entry 2934 (class 0 OID 16405)
+-- TOC entry 2936 (class 0 OID 16405)
 -- Dependencies: 201
 -- Data for Name: fencer; Type: TABLE DATA; Schema: fencing; Owner: -
 --
@@ -270,7 +304,7 @@ INSERT INTO fencing.fencer (fencer_id, name) OVERRIDING SYSTEM VALUE VALUES (4, 
 
 
 --
--- TOC entry 2941 (class 0 OID 16555)
+-- TOC entry 2943 (class 0 OID 16555)
 -- Dependencies: 208
 -- Data for Name: principal; Type: TABLE DATA; Schema: fencing; Owner: -
 --
@@ -279,7 +313,7 @@ INSERT INTO fencing.principal (id, email, firstname, lastname, password) VALUES 
 
 
 --
--- TOC entry 2942 (class 0 OID 16563)
+-- TOC entry 2944 (class 0 OID 16563)
 -- Dependencies: 209
 -- Data for Name: principal_role; Type: TABLE DATA; Schema: fencing; Owner: -
 --
@@ -289,7 +323,7 @@ INSERT INTO fencing.principal_role (principal_id, roles_id) VALUES (1, 2);
 
 
 --
--- TOC entry 2939 (class 0 OID 16462)
+-- TOC entry 2941 (class 0 OID 16462)
 -- Dependencies: 206
 -- Data for Name: role; Type: TABLE DATA; Schema: fencing; Owner: -
 --
@@ -299,7 +333,7 @@ INSERT INTO fencing.role (id, role) VALUES (2, 'ADMIN');
 
 
 --
--- TOC entry 2936 (class 0 OID 16413)
+-- TOC entry 2938 (class 0 OID 16413)
 -- Dependencies: 203
 -- Data for Name: weapon; Type: TABLE DATA; Schema: fencing; Owner: -
 --
@@ -308,16 +342,16 @@ INSERT INTO fencing.weapon (weapon_id, name) OVERRIDING SYSTEM VALUE VALUES (1, 
 
 
 --
--- TOC entry 3005 (class 0 OID 0)
+-- TOC entry 3007 (class 0 OID 0)
 -- Dependencies: 199
 -- Name: bout_bout_id_seq; Type: SEQUENCE SET; Schema: fencing; Owner: -
 --
 
-SELECT pg_catalog.setval('fencing.bout_bout_id_seq', 1, false);
+SELECT pg_catalog.setval('fencing.bout_bout_id_seq', 2, true);
 
 
 --
--- TOC entry 3006 (class 0 OID 0)
+-- TOC entry 3008 (class 0 OID 0)
 -- Dependencies: 202
 -- Name: fencer_fencer_id_seq; Type: SEQUENCE SET; Schema: fencing; Owner: -
 --
@@ -326,16 +360,16 @@ SELECT pg_catalog.setval('fencing.fencer_fencer_id_seq', 4, true);
 
 
 --
--- TOC entry 3007 (class 0 OID 0)
+-- TOC entry 3009 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: principal_id_seq; Type: SEQUENCE SET; Schema: fencing; Owner: -
 --
 
-SELECT pg_catalog.setval('fencing.principal_id_seq', 1, false);
+SELECT pg_catalog.setval('fencing.principal_id_seq', 2, true);
 
 
 --
--- TOC entry 3008 (class 0 OID 0)
+-- TOC entry 3010 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: role_id_seq; Type: SEQUENCE SET; Schema: fencing; Owner: -
 --
@@ -344,7 +378,7 @@ SELECT pg_catalog.setval('fencing.role_id_seq', 1, false);
 
 
 --
--- TOC entry 3009 (class 0 OID 0)
+-- TOC entry 3011 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: weapon_weapon_id_seq; Type: SEQUENCE SET; Schema: fencing; Owner: -
 --
@@ -353,7 +387,7 @@ SELECT pg_catalog.setval('fencing.weapon_weapon_id_seq', 1, true);
 
 
 --
--- TOC entry 2792 (class 2606 OID 16422)
+-- TOC entry 2794 (class 2606 OID 16422)
 -- Name: bout_fencer bout_fencer_pk; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -362,7 +396,7 @@ ALTER TABLE ONLY fencing.bout_fencer
 
 
 --
--- TOC entry 2790 (class 2606 OID 16424)
+-- TOC entry 2792 (class 2606 OID 16424)
 -- Name: bout bout_pkey; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -371,7 +405,7 @@ ALTER TABLE ONLY fencing.bout
 
 
 --
--- TOC entry 2794 (class 2606 OID 16426)
+-- TOC entry 2796 (class 2606 OID 16426)
 -- Name: fencer fencer_pkey; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -380,7 +414,7 @@ ALTER TABLE ONLY fencing.fencer
 
 
 --
--- TOC entry 2802 (class 2606 OID 16562)
+-- TOC entry 2804 (class 2606 OID 16562)
 -- Name: principal principal_pkey; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -389,7 +423,7 @@ ALTER TABLE ONLY fencing.principal
 
 
 --
--- TOC entry 2798 (class 2606 OID 16466)
+-- TOC entry 2800 (class 2606 OID 16466)
 -- Name: role role_pkey; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -398,7 +432,7 @@ ALTER TABLE ONLY fencing.role
 
 
 --
--- TOC entry 2800 (class 2606 OID 16567)
+-- TOC entry 2802 (class 2606 OID 16567)
 -- Name: role uk_bjxn5ii7v7ygwx39et0wawu0q; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -407,7 +441,7 @@ ALTER TABLE ONLY fencing.role
 
 
 --
--- TOC entry 2804 (class 2606 OID 16569)
+-- TOC entry 2806 (class 2606 OID 16569)
 -- Name: principal uk_ob8kqyqqgmefl0aco34akdtpe; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -416,7 +450,7 @@ ALTER TABLE ONLY fencing.principal
 
 
 --
--- TOC entry 2796 (class 2606 OID 16428)
+-- TOC entry 2798 (class 2606 OID 16428)
 -- Name: weapon weapon_pkey; Type: CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -425,7 +459,7 @@ ALTER TABLE ONLY fencing.weapon
 
 
 --
--- TOC entry 2806 (class 2606 OID 16429)
+-- TOC entry 2808 (class 2606 OID 16429)
 -- Name: bout_fencer bout_fencer_bout_id_fkey; Type: FK CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -434,7 +468,7 @@ ALTER TABLE ONLY fencing.bout_fencer
 
 
 --
--- TOC entry 2807 (class 2606 OID 16434)
+-- TOC entry 2809 (class 2606 OID 16434)
 -- Name: bout_fencer bout_fencer_fencer_id_fkey; Type: FK CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -443,7 +477,7 @@ ALTER TABLE ONLY fencing.bout_fencer
 
 
 --
--- TOC entry 2805 (class 2606 OID 16439)
+-- TOC entry 2807 (class 2606 OID 16439)
 -- Name: bout bout_weapon_id_fkey; Type: FK CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -452,7 +486,7 @@ ALTER TABLE ONLY fencing.bout
 
 
 --
--- TOC entry 2808 (class 2606 OID 16570)
+-- TOC entry 2810 (class 2606 OID 16570)
 -- Name: principal_role fk_5k3dviices5fr7560hvc81x4r; Type: FK CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -461,7 +495,7 @@ ALTER TABLE ONLY fencing.principal_role
 
 
 --
--- TOC entry 2809 (class 2606 OID 16575)
+-- TOC entry 2811 (class 2606 OID 16575)
 -- Name: principal_role fk_apcc8lxk2xnug8377fatvbn04; Type: FK CONSTRAINT; Schema: fencing; Owner: -
 --
 
@@ -470,7 +504,7 @@ ALTER TABLE ONLY fencing.principal_role
 
 
 --
--- TOC entry 2949 (class 0 OID 0)
+-- TOC entry 2951 (class 0 OID 0)
 -- Dependencies: 9
 -- Name: SCHEMA fencing; Type: ACL; Schema: -; Owner: -
 --
@@ -479,7 +513,7 @@ GRANT ALL ON SCHEMA fencing TO telescrime;
 
 
 --
--- TOC entry 2951 (class 0 OID 0)
+-- TOC entry 2953 (class 0 OID 0)
 -- Dependencies: 7
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
 --
@@ -488,7 +522,7 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
--- TOC entry 2954 (class 0 OID 0)
+-- TOC entry 2956 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: FUNCTION citextin(cstring); Type: ACL; Schema: fencing; Owner: -
 --
@@ -497,7 +531,7 @@ GRANT ALL ON FUNCTION fencing.citextin(cstring) TO telescrime;
 
 
 --
--- TOC entry 2955 (class 0 OID 0)
+-- TOC entry 2957 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: FUNCTION citextout(fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -506,7 +540,7 @@ GRANT ALL ON FUNCTION fencing.citextout(fencing.citext) TO telescrime;
 
 
 --
--- TOC entry 2956 (class 0 OID 0)
+-- TOC entry 2958 (class 0 OID 0)
 -- Dependencies: 237
 -- Name: FUNCTION citextrecv(internal); Type: ACL; Schema: fencing; Owner: -
 --
@@ -515,7 +549,7 @@ GRANT ALL ON FUNCTION fencing.citextrecv(internal) TO telescrime;
 
 
 --
--- TOC entry 2957 (class 0 OID 0)
+-- TOC entry 2959 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: FUNCTION citextsend(fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -524,7 +558,7 @@ GRANT ALL ON FUNCTION fencing.citextsend(fencing.citext) TO telescrime;
 
 
 --
--- TOC entry 2958 (class 0 OID 0)
+-- TOC entry 2960 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: FUNCTION citext(boolean); Type: ACL; Schema: fencing; Owner: -
 --
@@ -533,7 +567,7 @@ GRANT ALL ON FUNCTION fencing.citext(boolean) TO telescrime;
 
 
 --
--- TOC entry 2959 (class 0 OID 0)
+-- TOC entry 2961 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: FUNCTION citext(character); Type: ACL; Schema: fencing; Owner: -
 --
@@ -542,7 +576,7 @@ GRANT ALL ON FUNCTION fencing.citext(character) TO telescrime;
 
 
 --
--- TOC entry 2960 (class 0 OID 0)
+-- TOC entry 2962 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: FUNCTION citext(inet); Type: ACL; Schema: fencing; Owner: -
 --
@@ -551,7 +585,7 @@ GRANT ALL ON FUNCTION fencing.citext(inet) TO telescrime;
 
 
 --
--- TOC entry 2961 (class 0 OID 0)
+-- TOC entry 2963 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: FUNCTION citext_cmp(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -560,7 +594,7 @@ GRANT ALL ON FUNCTION fencing.citext_cmp(fencing.citext, fencing.citext) TO tele
 
 
 --
--- TOC entry 2962 (class 0 OID 0)
+-- TOC entry 2964 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: FUNCTION citext_eq(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -569,7 +603,7 @@ GRANT ALL ON FUNCTION fencing.citext_eq(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2963 (class 0 OID 0)
+-- TOC entry 2965 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: FUNCTION citext_ge(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -578,7 +612,7 @@ GRANT ALL ON FUNCTION fencing.citext_ge(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2964 (class 0 OID 0)
+-- TOC entry 2966 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: FUNCTION citext_gt(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -587,7 +621,7 @@ GRANT ALL ON FUNCTION fencing.citext_gt(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2965 (class 0 OID 0)
+-- TOC entry 2967 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: FUNCTION citext_hash(fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -596,7 +630,7 @@ GRANT ALL ON FUNCTION fencing.citext_hash(fencing.citext) TO telescrime;
 
 
 --
--- TOC entry 2966 (class 0 OID 0)
+-- TOC entry 2968 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: FUNCTION citext_larger(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -605,7 +639,7 @@ GRANT ALL ON FUNCTION fencing.citext_larger(fencing.citext, fencing.citext) TO t
 
 
 --
--- TOC entry 2967 (class 0 OID 0)
+-- TOC entry 2969 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: FUNCTION citext_le(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -614,7 +648,7 @@ GRANT ALL ON FUNCTION fencing.citext_le(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2968 (class 0 OID 0)
+-- TOC entry 2970 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: FUNCTION citext_lt(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -623,7 +657,7 @@ GRANT ALL ON FUNCTION fencing.citext_lt(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2969 (class 0 OID 0)
+-- TOC entry 2971 (class 0 OID 0)
 -- Dependencies: 233
 -- Name: FUNCTION citext_ne(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -632,7 +666,7 @@ GRANT ALL ON FUNCTION fencing.citext_ne(fencing.citext, fencing.citext) TO teles
 
 
 --
--- TOC entry 2970 (class 0 OID 0)
+-- TOC entry 2972 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: FUNCTION citext_smaller(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -641,7 +675,7 @@ GRANT ALL ON FUNCTION fencing.citext_smaller(fencing.citext, fencing.citext) TO 
 
 
 --
--- TOC entry 2971 (class 0 OID 0)
+-- TOC entry 2973 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: FUNCTION regexp_match(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -650,7 +684,7 @@ GRANT ALL ON FUNCTION fencing.regexp_match(fencing.citext, fencing.citext) TO te
 
 
 --
--- TOC entry 2972 (class 0 OID 0)
+-- TOC entry 2974 (class 0 OID 0)
 -- Dependencies: 239
 -- Name: FUNCTION regexp_match(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -659,7 +693,7 @@ GRANT ALL ON FUNCTION fencing.regexp_match(fencing.citext, fencing.citext, text)
 
 
 --
--- TOC entry 2973 (class 0 OID 0)
+-- TOC entry 2975 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: FUNCTION regexp_matches(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -668,7 +702,7 @@ GRANT ALL ON FUNCTION fencing.regexp_matches(fencing.citext, fencing.citext) TO 
 
 
 --
--- TOC entry 2974 (class 0 OID 0)
+-- TOC entry 2976 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: FUNCTION regexp_matches(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -677,7 +711,7 @@ GRANT ALL ON FUNCTION fencing.regexp_matches(fencing.citext, fencing.citext, tex
 
 
 --
--- TOC entry 2975 (class 0 OID 0)
+-- TOC entry 2977 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: FUNCTION regexp_replace(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -686,7 +720,7 @@ GRANT ALL ON FUNCTION fencing.regexp_replace(fencing.citext, fencing.citext, tex
 
 
 --
--- TOC entry 2976 (class 0 OID 0)
+-- TOC entry 2978 (class 0 OID 0)
 -- Dependencies: 244
 -- Name: FUNCTION regexp_replace(fencing.citext, fencing.citext, text, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -695,7 +729,7 @@ GRANT ALL ON FUNCTION fencing.regexp_replace(fencing.citext, fencing.citext, tex
 
 
 --
--- TOC entry 2977 (class 0 OID 0)
+-- TOC entry 2979 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: FUNCTION regexp_split_to_array(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -704,7 +738,7 @@ GRANT ALL ON FUNCTION fencing.regexp_split_to_array(fencing.citext, fencing.cite
 
 
 --
--- TOC entry 2978 (class 0 OID 0)
+-- TOC entry 2980 (class 0 OID 0)
 -- Dependencies: 246
 -- Name: FUNCTION regexp_split_to_array(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -713,7 +747,7 @@ GRANT ALL ON FUNCTION fencing.regexp_split_to_array(fencing.citext, fencing.cite
 
 
 --
--- TOC entry 2979 (class 0 OID 0)
+-- TOC entry 2981 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: FUNCTION regexp_split_to_table(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -722,7 +756,7 @@ GRANT ALL ON FUNCTION fencing.regexp_split_to_table(fencing.citext, fencing.cite
 
 
 --
--- TOC entry 2980 (class 0 OID 0)
+-- TOC entry 2982 (class 0 OID 0)
 -- Dependencies: 247
 -- Name: FUNCTION regexp_split_to_table(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -731,7 +765,7 @@ GRANT ALL ON FUNCTION fencing.regexp_split_to_table(fencing.citext, fencing.cite
 
 
 --
--- TOC entry 2981 (class 0 OID 0)
+-- TOC entry 2983 (class 0 OID 0)
 -- Dependencies: 249
 -- Name: FUNCTION replace(fencing.citext, fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -740,7 +774,7 @@ GRANT ALL ON FUNCTION fencing.replace(fencing.citext, fencing.citext, fencing.ci
 
 
 --
--- TOC entry 2982 (class 0 OID 0)
+-- TOC entry 2984 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: FUNCTION split_part(fencing.citext, fencing.citext, integer); Type: ACL; Schema: fencing; Owner: -
 --
@@ -749,7 +783,7 @@ GRANT ALL ON FUNCTION fencing.split_part(fencing.citext, fencing.citext, integer
 
 
 --
--- TOC entry 2983 (class 0 OID 0)
+-- TOC entry 2985 (class 0 OID 0)
 -- Dependencies: 251
 -- Name: FUNCTION strpos(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -758,7 +792,7 @@ GRANT ALL ON FUNCTION fencing.strpos(fencing.citext, fencing.citext) TO telescri
 
 
 --
--- TOC entry 2984 (class 0 OID 0)
+-- TOC entry 2986 (class 0 OID 0)
 -- Dependencies: 253
 -- Name: FUNCTION texticlike(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -767,7 +801,7 @@ GRANT ALL ON FUNCTION fencing.texticlike(fencing.citext, fencing.citext) TO tele
 
 
 --
--- TOC entry 2985 (class 0 OID 0)
+-- TOC entry 2987 (class 0 OID 0)
 -- Dependencies: 252
 -- Name: FUNCTION texticlike(fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -776,7 +810,7 @@ GRANT ALL ON FUNCTION fencing.texticlike(fencing.citext, text) TO telescrime;
 
 
 --
--- TOC entry 2986 (class 0 OID 0)
+-- TOC entry 2988 (class 0 OID 0)
 -- Dependencies: 254
 -- Name: FUNCTION texticnlike(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -785,7 +819,7 @@ GRANT ALL ON FUNCTION fencing.texticnlike(fencing.citext, fencing.citext) TO tel
 
 
 --
--- TOC entry 2987 (class 0 OID 0)
+-- TOC entry 2989 (class 0 OID 0)
 -- Dependencies: 255
 -- Name: FUNCTION texticnlike(fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -794,7 +828,7 @@ GRANT ALL ON FUNCTION fencing.texticnlike(fencing.citext, text) TO telescrime;
 
 
 --
--- TOC entry 2988 (class 0 OID 0)
+-- TOC entry 2990 (class 0 OID 0)
 -- Dependencies: 256
 -- Name: FUNCTION texticregexeq(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -803,7 +837,7 @@ GRANT ALL ON FUNCTION fencing.texticregexeq(fencing.citext, fencing.citext) TO t
 
 
 --
--- TOC entry 2989 (class 0 OID 0)
+-- TOC entry 2991 (class 0 OID 0)
 -- Dependencies: 257
 -- Name: FUNCTION texticregexeq(fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -812,7 +846,7 @@ GRANT ALL ON FUNCTION fencing.texticregexeq(fencing.citext, text) TO telescrime;
 
 
 --
--- TOC entry 2990 (class 0 OID 0)
+-- TOC entry 2992 (class 0 OID 0)
 -- Dependencies: 259
 -- Name: FUNCTION texticregexne(fencing.citext, fencing.citext); Type: ACL; Schema: fencing; Owner: -
 --
@@ -821,7 +855,7 @@ GRANT ALL ON FUNCTION fencing.texticregexne(fencing.citext, fencing.citext) TO t
 
 
 --
--- TOC entry 2991 (class 0 OID 0)
+-- TOC entry 2993 (class 0 OID 0)
 -- Dependencies: 258
 -- Name: FUNCTION texticregexne(fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -830,7 +864,7 @@ GRANT ALL ON FUNCTION fencing.texticregexne(fencing.citext, text) TO telescrime;
 
 
 --
--- TOC entry 2992 (class 0 OID 0)
+-- TOC entry 2994 (class 0 OID 0)
 -- Dependencies: 260
 -- Name: FUNCTION translate(fencing.citext, fencing.citext, text); Type: ACL; Schema: fencing; Owner: -
 --
@@ -839,7 +873,7 @@ GRANT ALL ON FUNCTION fencing.translate(fencing.citext, fencing.citext, text) TO
 
 
 --
--- TOC entry 2993 (class 0 OID 0)
+-- TOC entry 2995 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: TABLE bout; Type: ACL; Schema: fencing; Owner: -
 --
@@ -848,7 +882,7 @@ GRANT ALL ON TABLE fencing.bout TO telescrime;
 
 
 --
--- TOC entry 2994 (class 0 OID 0)
+-- TOC entry 2996 (class 0 OID 0)
 -- Dependencies: 199
 -- Name: SEQUENCE bout_bout_id_seq; Type: ACL; Schema: fencing; Owner: -
 --
@@ -857,7 +891,7 @@ GRANT ALL ON SEQUENCE fencing.bout_bout_id_seq TO telescrime;
 
 
 --
--- TOC entry 2995 (class 0 OID 0)
+-- TOC entry 2997 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: TABLE bout_fencer; Type: ACL; Schema: fencing; Owner: -
 --
@@ -866,7 +900,7 @@ GRANT ALL ON TABLE fencing.bout_fencer TO telescrime;
 
 
 --
--- TOC entry 2996 (class 0 OID 0)
+-- TOC entry 2998 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: TABLE fencer; Type: ACL; Schema: fencing; Owner: -
 --
@@ -875,7 +909,7 @@ GRANT ALL ON TABLE fencing.fencer TO telescrime;
 
 
 --
--- TOC entry 2997 (class 0 OID 0)
+-- TOC entry 2999 (class 0 OID 0)
 -- Dependencies: 202
 -- Name: SEQUENCE fencer_fencer_id_seq; Type: ACL; Schema: fencing; Owner: -
 --
@@ -884,7 +918,7 @@ GRANT ALL ON SEQUENCE fencing.fencer_fencer_id_seq TO telescrime;
 
 
 --
--- TOC entry 2998 (class 0 OID 0)
+-- TOC entry 3000 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: TABLE principal; Type: ACL; Schema: fencing; Owner: -
 --
@@ -893,7 +927,7 @@ GRANT ALL ON TABLE fencing.principal TO telescrime;
 
 
 --
--- TOC entry 2999 (class 0 OID 0)
+-- TOC entry 3001 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: SEQUENCE principal_id_seq; Type: ACL; Schema: fencing; Owner: -
 --
@@ -902,7 +936,7 @@ GRANT ALL ON SEQUENCE fencing.principal_id_seq TO telescrime;
 
 
 --
--- TOC entry 3000 (class 0 OID 0)
+-- TOC entry 3002 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: TABLE principal_role; Type: ACL; Schema: fencing; Owner: -
 --
@@ -911,7 +945,7 @@ GRANT ALL ON TABLE fencing.principal_role TO telescrime;
 
 
 --
--- TOC entry 3001 (class 0 OID 0)
+-- TOC entry 3003 (class 0 OID 0)
 -- Dependencies: 206
 -- Name: TABLE role; Type: ACL; Schema: fencing; Owner: -
 --
@@ -920,7 +954,7 @@ GRANT ALL ON TABLE fencing.role TO telescrime;
 
 
 --
--- TOC entry 3002 (class 0 OID 0)
+-- TOC entry 3004 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: SEQUENCE role_id_seq; Type: ACL; Schema: fencing; Owner: -
 --
@@ -929,7 +963,7 @@ GRANT ALL ON SEQUENCE fencing.role_id_seq TO telescrime;
 
 
 --
--- TOC entry 3003 (class 0 OID 0)
+-- TOC entry 3005 (class 0 OID 0)
 -- Dependencies: 203
 -- Name: TABLE weapon; Type: ACL; Schema: fencing; Owner: -
 --
@@ -938,7 +972,7 @@ GRANT ALL ON TABLE fencing.weapon TO telescrime WITH GRANT OPTION;
 
 
 --
--- TOC entry 3004 (class 0 OID 0)
+-- TOC entry 3006 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: SEQUENCE weapon_weapon_id_seq; Type: ACL; Schema: fencing; Owner: -
 --
@@ -948,7 +982,7 @@ GRANT SELECT,USAGE ON SEQUENCE fencing.weapon_weapon_id_seq TO telescrime WITH G
 
 
 --
--- TOC entry 1776 (class 826 OID 16449)
+-- TOC entry 1778 (class 826 OID 16449)
 -- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: -; Owner: -
 --
 
@@ -956,7 +990,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE lukas GRANT SELECT,USAGE ON SEQUENCES  TO tele
 
 
 --
--- TOC entry 1777 (class 826 OID 16450)
+-- TOC entry 1779 (class 826 OID 16450)
 -- Name: DEFAULT PRIVILEGES FOR TYPES; Type: DEFAULT ACL; Schema: -; Owner: -
 --
 
@@ -964,7 +998,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE lukas GRANT ALL ON TYPES  TO telescrime WITH G
 
 
 --
--- TOC entry 1778 (class 826 OID 16451)
+-- TOC entry 1780 (class 826 OID 16451)
 -- Name: DEFAULT PRIVILEGES FOR FUNCTIONS; Type: DEFAULT ACL; Schema: -; Owner: -
 --
 
@@ -972,14 +1006,14 @@ ALTER DEFAULT PRIVILEGES FOR ROLE lukas GRANT ALL ON FUNCTIONS  TO telescrime WI
 
 
 --
--- TOC entry 1779 (class 826 OID 16452)
+-- TOC entry 1781 (class 826 OID 16452)
 -- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: -; Owner: -
 --
 
 ALTER DEFAULT PRIVILEGES FOR ROLE lukas GRANT ALL ON TABLES  TO telescrime WITH GRANT OPTION;
 
 
--- Completed on 2018-12-06 23:01:00
+-- Completed on 2018-12-13 16:46:58
 
 --
 -- PostgreSQL database dump complete
