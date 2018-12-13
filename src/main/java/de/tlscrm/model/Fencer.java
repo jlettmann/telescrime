@@ -57,7 +57,7 @@ public class Fencer implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fencer")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "fencer")
 	public Set<BoutFencer> getBoutFencers() {
 		return this.boutFencers;
 	}

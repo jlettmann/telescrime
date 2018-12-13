@@ -38,7 +38,7 @@ public class Bout implements java.io.Serializable {
 	}
 
 	public Bout(final int boutId, final Weapon weapon, final Date boutDate,
-	        final Set<BoutFencer> boutFencers) {
+	      final Set<BoutFencer> boutFencers) {
 		this.boutId = boutId;
 		this.weapon = weapon;
 		this.boutDate = boutDate;
@@ -76,7 +76,7 @@ public class Bout implements java.io.Serializable {
 		this.boutDate = boutDate;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bout")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bout")
 	public Set<BoutFencer> getBoutFencers() {
 		return this.boutFencers;
 	}

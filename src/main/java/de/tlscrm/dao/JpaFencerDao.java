@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Named;
 import javax.persistence.TypedQuery;
+import de.tlscrm.model.BoutFencer;
 import de.tlscrm.model.Fencer;
 
 /**
@@ -17,7 +18,7 @@ public class JpaFencerDao extends JpaDao<Fencer> implements FencerDao {
 
 	@Override
 	public Optional<Fencer> get(final long id) {
-		return Optional.ofNullable(entityManager.find(Fencer.class, id));
+		return Optional.ofNullable(entityManager.find(Fencer.class, (int) id));
 	}
 
 	@Override
@@ -27,4 +28,17 @@ public class JpaFencerDao extends JpaDao<Fencer> implements FencerDao {
 		return getAllFencers.getResultList();
 	}
 
+	@Override
+	public int getHitsForFencer(final int id) {
+		Optional<Fencer> fencerOp = get(id);
+		if (fencerOp.isPresent()) {
+			Fencer fencer = fencerOp.get();
+			int totalHits = 0;
+			for (BoutFencer boutFencer : fencer.getBoutFencers()) {
+				totalHits += boutFencer.getHits();
+			}
+			return totalHits;
+		}
+		throw new IllegalArgumentException("Invalid id: " + id + " for table fencer.");
+	}
 }

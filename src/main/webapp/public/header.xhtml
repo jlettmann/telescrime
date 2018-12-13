@@ -10,17 +10,19 @@
 <h:body>
 	<ui:composition>
 		<!-- 			<h1>Header</h1> -->
+		<h:graphicImage value="/resources/images/FechtLogoHomepage.png" />
+		<h:panelGroup layout="block" id="headerLeft">
+<!-- 			<p:link outcome="/index.xhtml" value="#{msg.home}" /> -->
+			<p:link outcome="/public/ranking.xhtml" value="#{msg.ranking}" />
+			<p:link outcome="/admin/newUser.xhtml" value="#{msg.userManagement}"
+				rendered="#{loginHandler.currentPrincipalHasRole('ADMIN')}" />
+		</h:panelGroup>
 		<h:panelGroup layout="block" id="headerRight">
 			<h:form prependId="false">
 				<p:commandButton id="logoutButton" value="#{msg.logout}"
 					action="#{loginHandler.logout()}" partialSubmit="false"
 					update="@all" ajax="false" />
 			</h:form>
-		</h:panelGroup>
-		<h:panelGroup layout="block" id="headerLeft">
-			<p:link outcome="/index.xhtml" value="#{msg.home}" />
-			<p:link outcome="/admin/newUser.xhtml" value="#{msg.userManagement}"
-				rendered="#{loginHandler.currentPrincipalHasRole('ADMIN')}" />
 		</h:panelGroup>
 	</ui:composition>
 </h:body>

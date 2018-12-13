@@ -25,7 +25,7 @@ import de.tlscrm.model.Role;
 @RequestScoped
 public class LoginHandler implements Serializable {
 
-	private static final String NAV_HOME_REDIRECT = "/index.xhtml?faces-redirect=true";
+	private static final String NAV_HOME_REDIRECT = "/public/ranking.xhtml?faces-redirect=true";
 	private static final String NAV_LOGIN_REDIRECT = "/dologin.xhtml?faces-redirect=true";
 
 
