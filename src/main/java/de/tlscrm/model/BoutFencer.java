@@ -27,7 +27,7 @@ public class BoutFencer implements java.io.Serializable {
 	public BoutFencer() {}
 
 	public BoutFencer(final BoutFencerId id, final Bout bout, final Fencer fencer,
-	        final short hits) {
+	      final short hits) {
 		this.id = id;
 		this.bout = bout;
 		this.fencer = fencer;
@@ -46,7 +46,7 @@ public class BoutFencer implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "bout_id", nullable = false, insertable = false, updatable = false)
 	public Bout getBout() {
 		return this.bout;
@@ -56,7 +56,7 @@ public class BoutFencer implements java.io.Serializable {
 		this.bout = bout;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "fencer_id", nullable = false, insertable = false, updatable = false)
 	public Fencer getFencer() {
 		return this.fencer;

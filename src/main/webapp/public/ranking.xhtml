@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+		<ui:define name="content">
+			<p:dataTable var="fencer" value="#{ranking.fencers}">
+				<p:column headerText="#{msg.fencer}">
+					<h:outputText value="#{fencer.name}" />
+				</p:column>
+				<p:column headerText="#{msg.totalHits}" sortBy="#{ranking.getHitsForFencer(fencer)}">
+					<h:outputText value="#{ranking.getHitsForFencer(fencer)}" />
+				</p:column>
+			</p:dataTable>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
