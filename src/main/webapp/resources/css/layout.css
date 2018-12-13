@@ -4,7 +4,9 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font-family: sans-serif;
+	background-color: #F1F1F1;
 }
+
 #page {
 	display: flex;
 	flex-flow: column;
@@ -14,15 +16,42 @@ html, body {
 	width: 100vw;
 	height: 100vh;
 }
+
 #header {
-	background-color: #F1F1F1;
-	text-align: center;
+	background-color: white;
+	justify-content: flex-start; padding : 20px;
+	border-bottom: 1px solid black;
 	padding: 20px;
 }
+
+#header #headerLeft {
+	display: flex;
+	justify-content: flex-start;
+	align-self: flex-start;
+}
+
+#header #headerRight {
+	display: flex;
+	justify-content: flex-end;
+	align-self: flex-end;
+}
+
 #content {
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: flex-start;
+	align-self: center;
+	justify-content: center;
 	height: 100%;
-	background-color: hotpink;
+	width: 75%;
+	background-color: white;
+}
+
+#newUserContent {
+	display: flex;
+	flex-flow: column wrap;
+	margin-left: 10px;
+}
+
+#newUserContent button {
+	margin-top: 10px;
 }
