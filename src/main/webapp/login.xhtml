@@ -13,18 +13,24 @@
 	<!-- 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/> -->
 </h:head>
 <h:body>
-	<h1>Login</h1>
-	<h:form id="loginForm"
-		onsubmit="document.getElementById('loginForm').action='j_security_check';"
-		prependId="false">
-		<p:growl id="loginGrowl" sticky="true" showDetail="true" />
-		<p:outputLabel for="j_username" value="#{msg.email}" />
-		<p:inputText id="j_username" required="true"
-			requiredMessage="#{msg.emailRequired}" />
-		<p:outputLabel for="j_password" value="#{msg.password}" />
-		<p:password id="j_password" required="true"
-			requiredMessage="#{msg.passwordRequired}" />
-		<p:commandButton id="submit" value="#{msg.login}" ajax="false" />
-	</h:form>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+		<ui:define name="content">
+			<h:panelGroup id="login" layout="block">
+				<h1>Login</h1>
+				<h:form id="loginForm"
+					onsubmit="document.getElementById('loginForm').action='j_security_check';"
+					prependId="false">
+					<p:growl id="loginGrowl" sticky="true" showDetail="true" />
+					<p:outputLabel for="j_username" value="#{msg.email}" />
+					<p:inputText id="j_username" required="true"
+						requiredMessage="#{msg.emailRequired}" />
+					<p:outputLabel for="j_password" value="#{msg.password}" />
+					<p:password id="j_password" required="true"
+						requiredMessage="#{msg.passwordRequired}" />
+					<p:commandButton id="submit" value="#{msg.login}" ajax="false" />
+				</h:form>
+			</h:panelGroup>
+		</ui:define>
+	</ui:composition>
 </h:body>
 </html>

@@ -41,4 +41,11 @@ public class JpaFencerDao extends JpaDao<Fencer> implements FencerDao {
 		}
 		throw new IllegalArgumentException("Invalid id: " + id + " for table fencer.");
 	}
+
+	@Override
+	public boolean isNameFree(final String name) {
+		TypedQuery<Long> getCountByName = entityManager
+		      .createNamedQuery(Fencer.COUNT_NAME, Long.class).setParameter("name", name);
+		return getCountByName.getSingleResult() < 1L;
+	}
 }

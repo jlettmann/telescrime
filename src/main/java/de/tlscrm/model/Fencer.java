@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,9 +18,14 @@ import javax.persistence.Table;
  *
  * @author ltegethoff (modified after generation)
  */
+
+@NamedQuery(name = Fencer.COUNT_NAME,
+      query = "select count(f.name) from Fencer f where f.name = :name")
 @Entity
 @Table(name = "fencer", schema = "fencing")
 public class Fencer implements java.io.Serializable {
+
+	public static final String COUNT_NAME = "fencer.countname";
 
 	private int fencerId;
 	private String name;

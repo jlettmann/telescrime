@@ -12,8 +12,10 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import de.tlscrm.dao.FencerDao;
 import de.tlscrm.dao.PrincipalDao;
 import de.tlscrm.dao.RoleDao;
+import de.tlscrm.model.Fencer;
 import de.tlscrm.model.Principal;
 import de.tlscrm.model.Role;
 
@@ -35,6 +37,14 @@ public class UserManagement implements Serializable {
 	@Named("jpaRoleDao")
 	private transient RoleDao roleDao;
 
+	@Inject
+	@Named("jpaFencerDao")
+	private transient FencerDao fencerDao;
+
+	@Inject
+	private transient FacesContext facesContext;
+
+	private final Fencer newFencer = new Fencer();
 	private final Principal newPrincipal = new Principal();
 
 	private List<Role> roles = new ArrayList<>();
@@ -52,6 +62,10 @@ public class UserManagement implements Serializable {
 
 	public Principal getNewPricipal() {
 		return this.newPrincipal;
+	}
+
+	public Fencer getNewFencer() {
+		return this.newFencer;
 	}
 
 	/**
@@ -88,11 +102,35 @@ public class UserManagement implements Serializable {
 		}
 	}
 
+	/**
+	 * Ensures the uniqueness of a given Name for a {@link Fencer}.
+	 *
+	 * @param context
+	 * @param component
+	 * @param value
+	 */
+	public void validateName(final FacesContext context, final UIComponent component,
+	      final Object value) {
+		String inputName = (String) value;
+		if (!fencerDao.isNameFree(inputName)) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+			      "Fencer already exists", "This Fencer already exists."));
+		}
+	}
+
 	public void saveUser() {
 		if (!this.roles.isEmpty()) {
 			newPrincipal.setRoles(new HashSet<>(this.roles));
 			principalDao.save(newPrincipal);
+			facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+			      "Saved new User!", "New User was successfully saved!"));
 		}
+	}
+
+	public void saveFencer() {
+		fencerDao.save(newFencer);
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+		      "Saved new Fencer!", "New Fencer was successfully saved!"));
 	}
 
 }
