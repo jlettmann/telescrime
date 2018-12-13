@@ -6,4 +6,6 @@ public interface FencerDao extends Dao<Fencer> {
 
 	int getHitsForFencer(int id);
 
+	boolean isNameFree(String name);
+
 }

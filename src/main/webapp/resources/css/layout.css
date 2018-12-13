@@ -22,23 +22,29 @@ html, body {
 	flex-flow: row;
 	background-color: #AAAAAA;
 	justify-content: flex-start;
-	align-items: baseline;
-	border-bottom: 1px solid black;
+	align-items: baseline; border-bottom : 1px solid black;
 	padding: 20px;
+	border-bottom: 1px solid black;
 }
+
 #header #headerLeft {
+	
 }
+
 #header a {
 	margin-right: 5px;
 	vertical-align: bottom;
 }
+
 #header img {
 	max-height: 100px;
 	width: auto;
 }
+
 #header div:last-child {
 	margin-left: auto;
 }
+
 #header #headerRight {
 	display: flex;
 	justify-content: flex-end;
@@ -58,9 +64,19 @@ html, body {
 #newUserContent {
 	display: flex;
 	flex-flow: column wrap;
-	margin-left: 10px;
+	margin-right: 50px;
 }
 
 #newUserContent button {
+	margin-top: 10px;
+}
+
+#newFencerContent {
+	display: flex;
+	flex-flow: column wrap;
+	margin-left: 50px;
+}
+
+#newFencerContent button {
 	margin-top: 10px;
 }
